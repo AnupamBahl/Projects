@@ -1,0 +1,26 @@
+Acceptable inputs: 
+local.scala – works on 100k strings and looks for 3 0’s 
+local.scala X – works on 100k strings and looks for ‘X’ 0’s 
+local.scala X Y – works on (100* Y)k strings and looks for ‘X’ 0’s. Y has to be > 0.5  
+
+
+Popular Tryouts : 
+local.scala 2 0.05 
+local.scala 4 2 
+local.scala 5 2  
+
+Output: 
+1. Size of the work unit – there are 2 levels. The first computes random strings. The second converts them into SHA. 
+Both levels have multiple actors. Actors at the second level are doing the time consuming computation. 
+Given more than 3000 strings at a time, their execution starts becoming serial. I determined this by looking at their individual execution
+times (clock times). To keep it optimal, a list of 1000 strings is the work unit. To work on the required number of strings, the actors at
+the first level keep generating strings in a multiple of 1000 and keep forwarding to the second level. The “Controller” (Boss) manages 
+both levels. 
+
+2. Output with a requirement of 4 0’s: 
+  a. local.scala 4 1.5 – one result in 2.6 seconds 
+  b. local.scala 4 2 – five results in 3.52 seconds 
+
+3. 5 0’s – In order to find 5 0’s we need atleast 200k strings. So with “local.scala 5 2” we get 2 strings in 3.8 seconds 
+
+4. The most number of zeroes – 5 zeroes 
